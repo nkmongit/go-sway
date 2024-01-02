@@ -203,3 +203,51 @@ fmt.Printf(`Future Value: %.1f
 ```
 
 ### Understanding Functions
+
+Functions are used to make the code reusable and achieve DRY principle in the code.
+Here we are implementing a function that takes a string as output and prints it in the console.
+
+```go
+// Here we passed a parameter text i.e type of string
+func outputText(text string) {
+  fmt.Printf(text)
+}
+
+outputText("This is a string")
+```
+
+`Return Values and Variable Scope`
+
+- In Go we can return multiple values, unlike other programming languages.
+- Any variables or constants that are declared in a function are scoped to that function and are only available in that function only.
+
+```go
+// we have to also tell what is the return type
+func calculateFutureValues(investmentAmount, expectedReturnRate, years float64) (float64, float64) {
+// this function returns two values separated by a comma
+fv := investmentAmount * math.Pow((1+expectedReturnRate/100), years)
+rfv := fv / math.Pow(1+inflationRate/100, years)
+return fv, rfv
+}
+```
+
+And then when we are calling that function we should be storing the two returned values.
+
+```go
+futureValue, futureRealValue := calculateFutureValues(investmentAmount, expectedReturnRate, years)
+```
+
+`Alternative Return Value Syntax`
+
+We can define the variable names while assigning the return types and just make use of return keyword
+
+```go
+func calculateFutureValues(investmentAmount, expectedReturnRate, years float64) (fv float64,rfv float64) {
+// this function returns two values separated by a comma
+fv = investmentAmount * math.Pow((1+expectedReturnRate/100), years)
+rfv = fv / math.Pow(1+inflationRate/100, years)
+return
+}
+```
+
+### Control Structures
