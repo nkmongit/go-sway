@@ -251,3 +251,45 @@ return
 ```
 
 ### Control Structures
+
+Control statement consists of `if`, `else if` and `else`, they are used for changing the flow of the GO program.
+
+```go
+var age int = 18
+
+if age >= 18 {
+  fmt.Println("You allowed to drive bike")
+} else if age >= 24 {
+  fmt.Println("You are allowed to drive car")
+} else {
+  fmt.Println("You are not allowed to drive anything, but cycle")
+}
+```
+
+### Conditional Statements
+
+Go only supports `for` loop unlike other programming languages that have `do`, `do while`, but easily mimic those features with just the `for` loop here.
+And also have features like `break` and `continue`.
+
+```go
+// this will print number 0 to 5
+for i := 0; i >= 5; i++ {
+  fmt.Print(i)
+}
+```
+
+```go
+// this will run infinitely
+// mimicing while loop
+for {
+  fmt.Print("GO IS FUN")
+}
+```
+
+```go
+for isTrue {
+  fmt.Print("GO IS BETTER AND EASY")
+}
+```
+
+### Switch Statements
