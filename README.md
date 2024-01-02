@@ -132,8 +132,74 @@ func main() {
 }
 ```
 
-Can also declare and define multiple variables in the same line.
+`Can also declare and define multiple variables in the same line.`
 
 ```go
 var investmentAmount, expectedReturnRate float64 = 1000, 5.5
 ```
+
+`Adding constant values in Go`
+
+```go
+const inflationRate float64 = 2.5
+```
+
+As we know that we cannot reassign the value of constant.
+
+`Fetching input from the user`
+
+```go
+fmt.Scan(&investmentAmount)
+```
+
+`Improved User Input`
+
+```go
+fmt.Print("Enter the value for Investment Amount: ")
+fmt.Scan(&investmentAmount)
+```
+
+### fmt.Scan() Limitations
+
+- The fmt.Scan() function is a great function for easily fetching & using user input through the command line.
+
+- But this function also has an important limitation: You can't (easily) fetch multi-word input values. Fetching text that consists of more than a single word is tricky with this function.
+
+`Formatting Strings / Output`
+
+```go
+fmt.Println("Future Value: ", futureValue)
+```
+
+We can also make use of the formatting strings
+
+```go
+fmt.Printf("Future value: %v \nFuture value (adjusted for inflation): %v", futureValue, futureRealValue)
+```
+
+`Formatting floats in Strings`
+
+```go
+fmt.Printf("Future value: %.0f \nFuture value (adjusted for inflation): %1f\n", futureValue, futureRealValue)
+```
+
+`Creating formatted string`
+
+This formatted string would return a string.
+
+```go
+formattedFV := fmt.Sprintf("Future value: %.1f\n", futureValue)
+formattedRFV := fmt.Sprintf("Future value (adjusted for inflation): %.2f", futureRealValue)
+```
+
+`Building Multiline Strings`
+
+Making use of backtick character we can achieve multiline strings
+But can't make use of '\n' to break lines it will print '\n' too
+
+```go
+fmt.Printf(`Future Value: %.1f
+ Future Value (adjusted for inflation): %.1f`, futureValue, futureRealValue)
+```
+
+### Understanding Functions
