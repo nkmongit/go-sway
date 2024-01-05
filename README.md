@@ -338,7 +338,7 @@ The above function takes a float64 as the parameter, then stores it in the
 variable `balanceText` and then converts into the byte array and writes it into
 the file `balance.txt`, we even provide the file permission.
 
-`Reading from File`
+``Reading from File`
 
 ```go
 func getBalance() {
@@ -406,3 +406,93 @@ func getBalanceFromFile() (float64, error) {
 In the above example we are creating a custom error which makes use of the
 errors package, and also a predefined parameter called error in the function
 definition.
+
+`Time to Panic`
+
+Certain situations can come when we need to stop executing when getting an
+error. We can simply add `return` at the end of the `if` statement to return
+from our program.
+
+Another way we can exit out of that function we can make use of the `panic()`
+function, this function can output an error and stops the execution.
+
+```go
+panic("Can't continue, sorry")
+```
+
+## Working with Packages
+
+- Splitting Code Across Multiple Files.
+- Splitting Files Across Multiple Packages.
+- Importing & Using Custom Packages.
+
+### Splitting Code Across Files in The Same Package
+
+In the folder go-control-structure folder we had a file called bank.go, which
+belonged to a package called main, and created another file, that belongs to the
+same main package, and make use of function provided by communication.go.
+
+### Importing and Exporting from Different Pacakges
+
+To export any variable and function we have to write that function or variable
+name with first letter as capital this is the way of telling Go that we want to
+export this function or variable.
+
+```go
+package fileops
+
+import (
+	"errors"
+	"fmt"
+	"os"
+	"strconv"
+)
+
+var Something int = 9
+
+func GetFloatFromFile(fileName string) (float64, error) {
+	data, err := os.ReadFile(fileName)
+	if err != nil {
+		return 1000, errors.New("Failed to find file")
+	}
+
+	valueText := string(data)
+	value, err := strconv.ParseFloat(valueText, 64)
+	if err != nil {
+		return 1000, errors.New("Failed to parse stored value")
+	}
+	return value, nil
+}
+
+func WriteFloatToFile(value float64, fileName string) {
+	valueText := fmt.Sprint(value)
+	os.WriteFile(fileName, []byte(valueText), 0644)
+}
+```
+
+### Third Party Packages
+
+Now we gonna add a package that is not part of Go but an external package that
+generate random data for us.
+
+`go get github.com/Pallinder/go-randomdata`
+
+Will have to run the above command in our folder where we have `go.mod` file,
+where it store the package information.
+
+If in case we want to install the packages of go will have to run the `go get`
+command to install the packages mentioned in the `go.mod` file.
+
+To make use of the installed package we have to import it in our go file.
+
+```go
+import {
+"github.com/Pallinder/go-randomdata v1.2.0"
+}
+
+func main() {
+  fmt.Println(randomdata.PhoneNumber())
+}
+```
+
+Above will generate a random phone number and print it.

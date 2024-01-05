@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+	"os"
+)
 
 func main() {
 	// var revenue float64
@@ -9,16 +13,26 @@ func main() {
 
 	// fmt.Print("Enter the revenue: ")
 	// fmt.Scan(&revenue)
-	revenue := getUserInput("Enter the revenue: ")
+	revenue, err := getUserInput("Enter the revenue: ")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
 	// fmt.Print("Enter the expenses: ")
 	// fmt.Scan(&expenses)
-	expenses := getUserInput("Enter the expenses: ")
-
+	expenses, err := getUserInput("Enter the expenses: ")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	// fmt.Print("Enter the tax rate: ")
 	// fmt.Scan(&taxRate)
-	taxRate := getUserInput("Enter the tax-rate: ")
-
+	taxRate, err := getUserInput("Enter the tax-rate: ")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	// revenue, expenses, taxRate = takeInputs(revenue, expenses, taxRate)
 
 	// ebt := revenue - expenses
@@ -27,9 +41,15 @@ func main() {
 
 	ebt, profit, ratio := calculateThings(revenue, expenses, taxRate)
 
-	fmt.Print("Your EBT: %.1f \n", ebt)
-	fmt.Print("Your profit: %.1f \n", profit)
-	fmt.Print("Your ratio: %.2f \n", ratio)
+	fmt.Printf("Your EBT: %.1f \n", ebt)
+	fmt.Printf("Your profit: %.1f \n", profit)
+	fmt.Printf("Your ratio: %.2f \n", ratio)
+	storeResults(ebt, profit, ratio)
+}
+
+func storeResults(ebt, profit, ratio float64) {
+	results := fmt.Sprintf("EBT: %.1f\nProfit: %.1f\nRatio: %.3f\n", ebt, profit, ratio)
+	os.WriteFile("results.txt", []byte(results), 0644)
 }
 
 func calculateThings(revenue, expenses, taxRate float64) (float64, float64, float64) {
@@ -52,9 +72,13 @@ func calculateThings(revenue, expenses, taxRate float64) (float64, float64, floa
 // 	return revenue, expenses, taxRate
 // }
 
-func getUserInput(infoText string) float64 {
+func getUserInput(infoText string) (float64, error) {
 	var userInput float64
 	fmt.Print(infoText)
 	fmt.Scan(&userInput)
-	return userInput
+
+	if userInput < 1 {
+		return 0, errors.New("Invalid Input")
+	}
+	return userInput, nil
 }
