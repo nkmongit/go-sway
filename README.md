@@ -18,8 +18,8 @@ Values, Basic Types & Core Language Features
 
 - Understanding the Key Components of a Go Program.
 - Working with Values & Types.
-- Creating & Executing Functions.
-- Controlling Execution with Control Structures.
+- Creating & Executing Functions. -Controlling Execution with Control
+  Structures.
 
 ```go
 func main() {
@@ -496,3 +496,192 @@ func main() {
 ```
 
 Above will generate a random phone number and print it.
+
+## Understanding Pointers
+
+- What are Pointers?
+- Why does this feature exist?
+- How to work with Pointers?
+
+### WHAT ARE POINTERS?
+
+Variables that store value addresses instead of values.
+
+Lets say in your code you have created a variable `age := 32`, in that case that
+value 32 will be stored the computer's memory and that value in memory
+automatically gets an address, and this address is required to the computer to
+retrieve that value and work with it.
+
+And a pointer then is a variable where you don't store a value but where you
+instead use this special ampersand operator `&` to get and store the address of
+stored value.
+
+`agePointer := &age`
+
+So now `agePointer` would contain the address as a value.
+
+### WHY POINTERS?
+
+- Working with pointers we can avoid unnecessary value copies.
+
+  - For a very large & complex values, this may take up too much memory space
+    unnecessary.
+  - By default. Go creates a copy when passing values to function.
+  - In Go when we pass a variable to the function so that it can work with it.
+  - Go creates a copy of that value of that variable and it gets a new address
+    in the memory.
+  - Until the function the function execution is done, and the copied value will
+    eventually be cleaned up with Garbage Collector.
+  - Garbage Collector removes unused values from memory.
+  - With pointers, only one value is stored in memory ( and the address is
+    passed around)
+  - Instead passing a pointer as argument to a function no copy will be created
+    in the memory.
+
+```go
+age := 32
+
+func isAllowed(&age) {
+  if age > 18 {
+    fmt.Println("Allowed to drive")
+  } else {
+    fmt.Println("Not allowed to drive")
+  }
+}
+```
+
+In the above we are doing the same passing the pointer (address) as parameter.
+
+- Use pointers to directly mutate values.
+  - Pass a pointer (address) instead of a value to a function.
+  - The function can then directly edit the underlying value - no return value
+    is required.
+  - Can lead to less code (But also to less understandable code or unexpected
+    behaviours)
+
+`Writing Code without Pointers`
+
+`A Pointer's Null Value`
+
+All values in Go have a so-called "Null Value" - i.e., the value that's set as a
+default if no value is assigned to a variable.
+
+For example, the null value of an int variable `0`. Of a float64, it would be
+0.0. Of a string it's `""`. For a pointer, it's nil - special avlue built-into
+Go.
+
+`nil` represents the absence of an address value - i.e., a pointer poiinting at
+no address / no value in memory.
+
+## Structs & Custom Types
+
+- What are Structs?
+- Creating and Using Structs
+- Adding Methods to Structs
+
+Structs are used to group multiple values of similar types in a one single
+value.
+
+`Defining a User Defined Struct`
+
+```go
+import (
+    "time"
+)
+type User struct {
+    firstName striing
+    lastName string
+    birthDate string
+    createdAt: time.Time
+}
+```
+
+### Instantiating Structs & Structs Literal
+
+Making use of the custom structs that we created above.
+
+```go
+// creating a variable type of User struct
+var appUser User
+// then instantiating the struct `User{}` this is also called as 'Composite Literal' | 'Struct Literal'
+appUser = User{
+    firstName: userFirstName,
+    lastName: userLastName,
+    birthDate: userBirthDate
+}
+
+fmt.Println(appUser.firstName)
+```
+
+`Methods in Structs`
+
+```go
+func getUserData(promptText string) string {
+	fmt.Print(promptText)
+	var value string
+	fmt.Scan(&value)
+	return value
+}
+```
+
+Special kind of function in structs they are called as constructor function.
+It's just an utility function that used for creating a struct, so that we don't
+have to. This is just a pattern to follow, not built in for Go.
+
+```go
+// constructor function - utility function that creates a struct
+func newUser(firstName, lastName, birthDate string) *User {
+	return &User{
+		firstName: firstName,
+		lastName:  lastName,
+		birthDate: birthDate,
+		createdAt: time.Now(),
+	}
+}
+```
+
+`Using constructor function for validation`
+
+```go
+// validations
+func newUser(firstName, lastName, birthDate string) *User {
+	if firstName == "" || lastName == "" || birthDate == "" {
+	return nil, errors.New("First name, last name and birthdate are required")
+   }
+	return &User{
+		firstName: firstName,
+		lastName:  lastName,
+		birthDate: birthDate,
+		createdAt: time.Now(),
+	}
+}
+```
+
+`Struct Embedding`
+
+This means we can build a new struct that builds up on existing struct.
+
+```go
+// struct embedding
+type Admin struct {
+	email    string
+	password string
+	User
+}
+```
+
+```go
+// constructor function for Admin
+func NewAdmin(email, password string) Admin {
+	return Admin{
+		email:    email,
+		password: password,
+		User: User{
+			firstName: "ADMIN",
+			lastName:  "ADMIN",
+			birthDate: "___",
+			createdAt: time.Now(),
+		},
+	}
+}
+```
