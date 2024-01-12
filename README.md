@@ -685,3 +685,24 @@ func NewAdmin(email, password string) Admin {
 	}
 }
 ```
+
+We can also use this `type` keyword to assign an alias, to other built-in types.
+
+Creating my own type, maybe `string` making use of `type` keyword.
+
+```go
+// assigned an alias to the string built in type
+type customString string
+
+// adding methods to custom type, because we can't use it on local type
+func (text customString) log() {
+	fmt.Println(text)
+}
+
+func main() {
+	var name customString
+	name = "Nishant"
+
+	name.log()
+}
+```
