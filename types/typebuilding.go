@@ -10,9 +10,14 @@ func (text customString) log() {
 	fmt.Println(text)
 }
 
+func (text customString) hello() {
+	fmt.Println("Hello,", text)
+}
+
 func main() {
 	var name customString
 	name = "Nishant"
 
 	name.log()
+	name.hello()
 }

@@ -368,14 +368,14 @@ value 0.
 
 ```go
 func getBalanceFromFile() float64 {
-	data, err := os.ReadFile(accountBalanceFile)
-	if err != nil {
-		return 1000
-	}
+ data, err := os.ReadFile(accountBalanceFile)
+ if err != nil {
+  return 1000
+ }
 
-	balanceText := string(data)
-	balance, _ := strconv.ParseFloat(balanceText, 64)
-	return balance
+ balanceText := string(data)
+ balance, _ := strconv.ParseFloat(balanceText, 64)
+ return balance
 }
 ```
 
@@ -389,17 +389,17 @@ error.
 const accountBalanceFile = "balance.txt"
 
 func getBalanceFromFile() (float64, error) {
-	data, err := os.ReadFile(accountBalanceFile)
-	if err != nil {
-		return 1000, errors.New("Failed to find balance file")
-	}
+ data, err := os.ReadFile(accountBalanceFile)
+ if err != nil {
+  return 1000, errors.New("Failed to find balance file")
+ }
 
-	balanceText := string(data)
-	balance, err := strconv.ParseFloat(balanceText, 64)
-	if err != nil {
-		return 1000, errors.New("Failed to parse stored balance value")
-	}
-	return balance, nil
+ balanceText := string(data)
+ balance, err := strconv.ParseFloat(balanceText, 64)
+ if err != nil {
+  return 1000, errors.New("Failed to parse stored balance value")
+ }
+ return balance, nil
 }
 ```
 
@@ -442,31 +442,31 @@ export this function or variable.
 package fileops
 
 import (
-	"errors"
-	"fmt"
-	"os"
-	"strconv"
+ "errors"
+ "fmt"
+ "os"
+ "strconv"
 )
 
 var Something int = 9
 
 func GetFloatFromFile(fileName string) (float64, error) {
-	data, err := os.ReadFile(fileName)
-	if err != nil {
-		return 1000, errors.New("Failed to find file")
-	}
+ data, err := os.ReadFile(fileName)
+ if err != nil {
+  return 1000, errors.New("Failed to find file")
+ }
 
-	valueText := string(data)
-	value, err := strconv.ParseFloat(valueText, 64)
-	if err != nil {
-		return 1000, errors.New("Failed to parse stored value")
-	}
-	return value, nil
+ valueText := string(data)
+ value, err := strconv.ParseFloat(valueText, 64)
+ if err != nil {
+  return 1000, errors.New("Failed to parse stored value")
+ }
+ return value, nil
 }
 
 func WriteFloatToFile(value float64, fileName string) {
-	valueText := fmt.Sprint(value)
-	os.WriteFile(fileName, []byte(valueText), 0644)
+ valueText := fmt.Sprint(value)
+ os.WriteFile(fileName, []byte(valueText), 0644)
 }
 ```
 
@@ -617,10 +617,10 @@ fmt.Println(appUser.firstName)
 
 ```go
 func getUserData(promptText string) string {
-	fmt.Print(promptText)
-	var value string
-	fmt.Scan(&value)
-	return value
+ fmt.Print(promptText)
+ var value string
+ fmt.Scan(&value)
+ return value
 }
 ```
 
@@ -631,12 +631,12 @@ have to. This is just a pattern to follow, not built in for Go.
 ```go
 // constructor function - utility function that creates a struct
 func newUser(firstName, lastName, birthDate string) *User {
-	return &User{
-		firstName: firstName,
-		lastName:  lastName,
-		birthDate: birthDate,
-		createdAt: time.Now(),
-	}
+ return &User{
+  firstName: firstName,
+  lastName:  lastName,
+  birthDate: birthDate,
+  createdAt: time.Now(),
+ }
 }
 ```
 
@@ -645,15 +645,15 @@ func newUser(firstName, lastName, birthDate string) *User {
 ```go
 // validations
 func newUser(firstName, lastName, birthDate string) *User {
-	if firstName == "" || lastName == "" || birthDate == "" {
-	return nil, errors.New("First name, last name and birthdate are required")
+ if firstName == "" || lastName == "" || birthDate == "" {
+ return nil, errors.New("First name, last name and birthdate are required")
    }
-	return &User{
-		firstName: firstName,
-		lastName:  lastName,
-		birthDate: birthDate,
-		createdAt: time.Now(),
-	}
+ return &User{
+  firstName: firstName,
+  lastName:  lastName,
+  birthDate: birthDate,
+  createdAt: time.Now(),
+ }
 }
 ```
 
@@ -664,25 +664,25 @@ This means we can build a new struct that builds up on existing struct.
 ```go
 // struct embedding
 type Admin struct {
-	email    string
-	password string
-	User
+ email    string
+ password string
+ User
 }
 ```
 
 ```go
 // constructor function for Admin
 func NewAdmin(email, password string) Admin {
-	return Admin{
-		email:    email,
-		password: password,
-		User: User{
-			firstName: "ADMIN",
-			lastName:  "ADMIN",
-			birthDate: "___",
-			createdAt: time.Now(),
-		},
-	}
+ return Admin{
+  email:    email,
+  password: password,
+  User: User{
+   firstName: "ADMIN",
+   lastName:  "ADMIN",
+   birthDate: "___",
+   createdAt: time.Now(),
+  },
+ }
 }
 ```
 
@@ -696,13 +696,318 @@ type customString string
 
 // adding methods to custom type, because we can't use it on local type
 func (text customString) log() {
-	fmt.Println(text)
+ fmt.Println(text)
 }
 
 func main() {
-	var name customString
-	name = "Nishant"
+ var name customString
+ name = "Nishant"
 
-	name.log()
+ name.log()
 }
 ```
+
+Practice Project - `Todo that can write into file and spit JSON`
+
+In this project we are using the struct type to define the structure of the
+Todos.
+
+```go
+type Note struct {
+ Title     string
+ Content   string
+ CreatedAt time.Time
+}
+```
+
+The main obstacle while creating this application, was taking input from the
+user, while we could use the `fmt.Scanln()` method but it won't take more than
+one word as a string, so we wiil be using the `bufio.NewReader()`.
+
+```go
+func getUserInput(promt string) string {
+ fmt.Print(promt)
+ reader := bufio.NewReader(os.Stdin)
+
+ text, err := reader.ReadString('\n')
+ if err != nil {
+  return ""
+ }
+
+ text = strings.TrimSuffix(text, "\n")
+ text = strings.TrimSuffix(text, "\r")
+
+ return text
+}
+```
+
+We also had to trim out the `newline` and `\r` because the windows include both
+`\n` and `\r`.
+
+### Struct Tags
+
+The struct tags are eventually `metadata`, that we can add into our struct
+fields. But in here we have to give the metadata the JSON format because we
+making use of `json.Marshall()` to convert our struct type to JSON data.
+
+```go
+type Note struct {
+ Title     string    `json:"title"`
+ Content   string    `json:"content"`
+ CreatedAt time.Time `json:"created_at"`
+}
+```
+
+In the above code we are providing the metadata to the struct type, so whenever
+the we are converting the `struct` into the JSON format it will search for the
+JSON metadata.
+
+## Interfaces
+
+Lets say in this above application we just don't want to allow users to store
+notes but also todos. And todo also needs to be `struct` but unlike note it
+should not have a title, createdAt instead it should just have content.
+
+```go
+// creating an interface
+type saver interface {
+ Save() error
+}
+```
+
+Here we have created an interface, which is called as saver, because it is
+pattern in the Go Lang that if we there's only one method definition inside the
+interface, the interface name should be same as that one method inside the
+interface with in the end appended with "er" string.
+
+Now that we have an interface, if any of the struct has the method named
+`Save()` will be able to use that function without re-defining the method for
+each and every struct.
+
+`The Special "Any Value Allowed" Type`
+
+```go
+func printSomething(value interface{}) {
+ fmt.Println(value)
+}
+```
+
+Here we taking the parameter value of `any` type by providing an empty
+`interface{}` to it and alternatively we can also write `any` keyword.
+
+```go
+func printSomethinAgain(value any) {
+ fmt.Println(value)
+}
+```
+
+Looking the type of the value:
+
+```go
+func printSomething(value interface{}) {
+ // checking the type of `value`
+ switch value.(type) {
+ case string:
+  fmt.Println("Integer:", value)
+ case float64:
+  fmt.Println("Float:", value)
+ default:
+  fmt.Printf("%T:%v\n", value, value)
+ }
+}
+```
+
+Alternative syntax for looking up a value type. No matter if the value is struct
+or any other value.
+
+```go
+typedValue, ok := value.(int)
+
+if ok {
+ fmt.Println("Integer:",typedValue + 1)
+}
+```
+
+`ok` would return a bool value, if the type is `int` for the value then it would
+return `true` else `false`.
+
+But this flexibility comes with a downside where if we are passing down two
+values through parameters and we assign type as any and then return them while
+doing add using '+'. It will throw an error because meanwhile we can add
+strings, numbers, float but not structs.
+
+```go
+func add(a, b interface {}) {
+ return a + b
+}
+```
+
+We can do a work around on this
+
+```go
+func add(a, b interface {}) {
+ aInt, aIsInt := a.(int)
+ bInt, bIsInt := b.(int)
+
+ if aIsInt && bIsInt {
+  return aInt + bInt
+ }
+}
+```
+
+As we have returned a value as an int type but the value returned can be of any
+type and for that we can also return `any` type or `interface{}`.
+
+```go
+func add(a, b interface{}) any {
+ aInt, aIsInt := a.(int)
+ bInt, bIsInt := b.(int)
+
+ if aIsInt && bIsInt {
+  return (aInt + bInt)
+ }
+ return nil
+}
+```
+
+<!--TODO : WE WILL UNDERSTAND THESE LATER ON -->
+
+## Generics
+
+## Arrays, Slices & Maps
+
+`Storing Data in Collections`
+
+- Understanding Arrays & Array Limitations
+- Understanding & Using Slices
+- Slices Deep Dive
+- Understanding & Using Maps
+
+We can store data in collections using `struct` type.
+
+```go
+type TemperatureData struct {
+ day1 float64
+ day2 float64
+ day3 float64
+ day4 float64
+}
+```
+
+But it can be cumbersome what if are trying to store a lot of data that have
+same datatype.
+
+Example: `Weather Data` - 25.93, 17.81, 55.3, 42.1
+
+To solve this issue we will be using the array.
+
+An array of "weather data points" (array of float64 values)
+
+```go
+{25.93, 17.91, 55.8, 42.1}
+```
+
+`Creating an Array`
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+ fmt.Println("ARRAYS")
+
+ prices := [4]float64{10.99, 9.99, 45.99, 20.0}
+
+ fmt.Println(prices)
+}
+```
+
+`Creating arrays in another way`
+
+```go
+var productNames [4]string
+```
+
+And if we print this array of string which hasn't been intialized with any
+string values yet. Will get an empty array printed instead of an error.
+
+We can assign values with the `index` position, we can also assign while we
+intialize the array:
+
+```go
+var productNames [4]string = [4]string{"A Book"}
+productNames[2] = "A Carpet"
+```
+
+Here the first value is being set as "A Book" and second would be "A Carpet",
+there will be some empty slot but that is because the array has the length of
+`4` and we have inserted only two values.
+
+`Slices in Array | Slicing in Array`
+
+Lets say we want only [9.99, 45.99] from the array to get this we can make use
+of slices.
+
+To achieve this we can do:
+
+```go
+featuredPrices := prices[1:3]
+```
+
+Here we have used the `index` positions of our array and from the index position
+`1` to excluding `3` it will return the array back.
+
+But it won't modify the original array in anyway, it will return a new array.
+
+But if you would change the values in the array that is copied over from
+`prices` array to `featuredPrices` arrays, changes occurred in `featuredPrices`
+would affect the `prices` too.
+
+```go
+prices := [4]float64{10.7, 4.5, 45.00, 20.8}
+fmt.Println(prices) // 10.7 4.5 45 20
+
+featuredPrices := prices[1:]
+
+fmt.Println(featuredPrices) // 4.5 45 20
+
+featuredPrices[0] = 3.4 // 3.4 45 20
+
+fmt.Println(prices) // 10.7 3.4 45 20
+```
+
+This happens because in Go, the values assigned of the array `prices` into the
+another variable is just referencing to the `prices` variable in the memory,
+it's not creating another variable for this.
+
+- And this is the reason Go saves a lot of memory.
+- Go also saves some `metadata` for the slices that we get, these are the
+  `length` and the `capacity`, and in the Go Lang has these features built in,
+  like `len()` and `cap()`.
+
+The len() gives us the number of items in the slice or array, meanwhile the
+cap() is bit different.
+
+`Creating 'DYNAMIC ARRAYS' using slices`
+
+- Creating a dynamic array is easy in Go, you just don't specify the number of elements you want in array.
+
+```go
+prices := []float64{10.6, 8.0, 8.7}
+```
+
+Here you can see that we haven't passed how many elements should the array have.
+But to add more elements in this dynamic array we can't just put `prices[3] = 12`
+this won't work as the array we defined already have `3` elements.
+
+To add more items in this `dynamic` array we have to make use of the `append` method.
+Which takes two values one is `slice` and other is the value that you want to add this will add the value in the last index and increase the length of the array.
+It also returns a new slice, that we have added to our previous slice.
+
+```go
+prices = append(prices, 9.0)
+```
+
+This `append` method won't change the original values of the slice but it returns new slice with the value appended to it.
+With this new value we could either assign these new values to the `old` slice or give it to the a new variable.
