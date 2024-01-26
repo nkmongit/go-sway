@@ -907,6 +907,8 @@ An array of "weather data points" (array of float64 values)
 {25.93, 17.91, 55.8, 42.1}
 ```
 
+### Arrays
+
 `Creating an Array`
 
 ```go
@@ -989,25 +991,132 @@ it's not creating another variable for this.
 The len() gives us the number of items in the slice or array, meanwhile the
 cap() is bit different.
 
+### Slices
+
 `Creating 'DYNAMIC ARRAYS' using slices`
 
-- Creating a dynamic array is easy in Go, you just don't specify the number of elements you want in array.
+- Creating a dynamic array is easy in Go, you just don't specify the number of
+  elements you want in array.
 
 ```go
 prices := []float64{10.6, 8.0, 8.7}
 ```
 
 Here you can see that we haven't passed how many elements should the array have.
-But to add more elements in this dynamic array we can't just put `prices[3] = 12`
-this won't work as the array we defined already have `3` elements.
+But to add more elements in this dynamic array we can't just put
+`prices[3] = 12` this won't work as the array we defined already have `3`
+elements.
 
-To add more items in this `dynamic` array we have to make use of the `append` method.
-Which takes two values one is `slice` and other is the value that you want to add this will add the value in the last index and increase the length of the array.
-It also returns a new slice, that we have added to our previous slice.
+To add more items in this `dynamic` array we have to make use of the `append`
+method. Which takes two values one is `slice` and other is the value that you
+want to add this will add the value in the last index and increase the length of
+the array. It also returns a new slice, that we have added to our previous
+slice.
 
 ```go
 prices = append(prices, 9.0)
 ```
 
-This `append` method won't change the original values of the slice but it returns new slice with the value appended to it.
-With this new value we could either assign these new values to the `old` slice or give it to the a new variable.
+This `append` method won't change the original values of the slice but it
+returns new slice with the value appended to it. With this new value we could
+either assign these new values to the `old` slice or give it to the a new
+variable.
+
+You can add as many values as you want using the `append` method.
+
+```go
+prices = append(prices, 90.8, 7.8, 8.6)
+```
+
+`Unpacking List`
+
+```go
+discountedPrices := []float64{101.99, 8.99, 20.59}
+
+prices = append(prices, discountedPrices...)
+
+fmt.Println(prices)
+```
+
+### Maps
+
+This is also a type of data structure which can also be used to group data. It's
+a bit like `struct` but different.
+
+```go
+import "fmt"
+
+func main() {
+ websites := map[string]string{
+  "Amazon Web Services": "https://www.aws.com",
+  "Google":              "https://www.google.com",
+ }
+ fmt.Println(websites)
+}
+```
+
+Map stores `key` and `value` pairs.
+
+`Mutating Maps`
+
+Extracting one value from the map.
+
+```go
+fmt.Println(websites["Amazon Web Services"])
+```
+
+`Adding new key : value pairs`
+
+```go
+websites["LinkedIn"] = "https://linkedin.com"
+```
+
+`Deleting "keys" form map`
+
+```go
+delete(websites, "Google")
+```
+
+`make() function`
+
+```go
+userNames := make([]string, 2)
+```
+
+Here we are making use of `make` function where we have declared an array of
+string as the first argument, and then the length of the array as second
+argument, and the third argument we can pass is the `capacity`.
+
+We can also use this `make` functions in `map` datatype too.
+
+```go
+courseRatings := make(map[string]float64, 3)
+```
+
+`Making use of 'type' => aliases`
+
+```go
+type floatMap map[string]float64
+
+courseRatings := make(floatMap, 3)
+```
+
+This is helpful because we can run methods on this types build through `make()`
+function.
+
+`For Loops using Maps, Arrays and Slices`
+
+```go
+for i, v := range userNames {
+	fmt.Println("Index: ", i)
+	fmt.Println("Value: ", v)
+}
+```
+
+`Using Loop in Map`
+
+```go
+for key, value := range courseRatings {
+	fmt.Println(key, ":", value)
+}
+```

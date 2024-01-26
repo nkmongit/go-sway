@@ -1,4 +1,4 @@
-package main
+package lists
 
 import "fmt"
 
@@ -8,6 +8,13 @@ func learnSlices() {
 	prices = append(prices, 12.0)
 
 	fmt.Println(prices)
+
+	discountedPrices := []float64{101.99, 8.99, 20.59}
+
+	prices = append(prices, discountedPrices...)
+
+	fmt.Println(prices)
+
 }
 
 func main() {
@@ -39,4 +46,5 @@ func main() {
 
 	fmt.Println("----------------DYNAMIC SLICES-----------------")
 	learnSlices()
+
 }

@@ -69,5 +69,3 @@ func main() {
 	})
 	fmt.Println(pro)
 }
-
-// Time to practice what you learned!
